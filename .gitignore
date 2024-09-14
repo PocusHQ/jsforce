@@ -1,7 +1,4 @@
-browser
-lib
-module
-dist
+
 
 .npmignore
 .vscode

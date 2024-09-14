@@ -22,7 +22,7 @@
       "url": "http://github.com/jsforce/jsforce/raw/main/LICENSE"
     }
   ],
-  "main": "./index",
+  "main": "./lib/index.js",
   "module": "./module/index",
   "browser": {
     ".": "./browser/index.js",
