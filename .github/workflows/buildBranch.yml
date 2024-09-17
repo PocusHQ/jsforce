@@ -1,5 +1,5 @@
 # .github/workflows/publish.yml
-name: Generate a build and push to another branch
+name: Generate a build and push to main-build branch
 
 on:
   push:
@@ -30,14 +30,9 @@ jobs:
           git config --global user.name 'GitHub Actions'
           git config --global user.email 'actions@github.com'
 
-      - name: Create and switch to a new branch
+      - name: Checkout target branch
         run: |
-          git checkout -b main-build
-
-      - name: Fetch and rebase changes
-        run: |
-          git fetch origin main-build
-          git rebase origin/main-build
+          git checkout -b main-build || git checkout main-build
 
       - name: Add and commit lib folder
         run: |
