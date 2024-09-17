@@ -36,7 +36,7 @@ jobs:
 
       - name: Add and commit lib folder
         run: |
-          git add lib
+          git add -f lib
           git commit -m "Add build artifacts to main-build branch"
 
       - name: Push to main-build branch
