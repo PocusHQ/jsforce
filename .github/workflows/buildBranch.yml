@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Build and Push
     steps:
-      - name: git-checkout
+      - name: Checkout code
         uses: actions/checkout@v2
 
       - uses: pnpm/action-setup@v3
@@ -25,12 +25,20 @@ jobs:
       - name: Build
         run: pnpm run build:node:cjs # The build command of your project
 
-      - name: Commit and Push All Changes
+      - name: Configure Git
         run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add .
-          git commit -m "Automated build: $(date +'%Y-%m-%d %H:%M:%S')"
+          git config --global user.name 'GitHub Actions'
+          git config --global user.email 'actions@github.com'
+
+      - name: Create and switch to a new branch
+        run: |
+          git checkout -b main-build
+
+      - name: Add and commit lib folder
+        run: |
+          git add lib
+          git commit -m "Add build artifacts to main-build branch"
+
+      - name: Push to main-build branch
+        run: |
           git push origin main-build
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
