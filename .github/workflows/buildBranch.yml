@@ -25,11 +25,12 @@ jobs:
       - name: Build
         run: pnpm run build:node:cjs # The build command of your project
 
-      - name: Push
-        uses: s0/git-publish-subdir-action@develop
+      - name: Commit and Push All Changes
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add .
+          git commit -m "Automated build: $(date +'%Y-%m-%d %H:%M:%S')"
+          git push origin main-build
         env:
-          REPO: self
-          BRANCH: main-build # The branch name where you want to push the assets
-          FOLDER: . # The directory where your assets are generated
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # GitHub will automatically add this - you don't need to bother getting a token
-          MESSAGE: "Build: ({sha}) {msg}" # The commit message
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
