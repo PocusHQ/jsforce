@@ -1,0 +1,44 @@
+# .github/workflows/publish.yml
+name: Generate a build and push to main-build branch
+
+on:
+  push:
+    branches:
+      - '*' # Trigger on any branch
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    name: Build and Push
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - uses: pnpm/action-setup@v3
+        name: Install pnpm
+        with:
+          version: 8.15.5
+
+      - name: Install all dependencies
+        run: pnpm install
+
+      - name: Build
+        run: pnpm run build:node:cjs # The build command of your project
+
+      - name: Configure Git
+        run: |
+          git config --global user.name 'GitHub Actions'
+          git config --global user.email 'actions@github.com'
+
+      - name: Checkout target branch
+        run: |
+          git checkout -b main-build || git checkout main-build
+
+      - name: Add and commit lib folder
+        run: |
+          git add -f lib
+          git commit -m "Add build artifacts to main-build branch" || echo "No changes to commit"
+
+      - name: Push to main-build branch
+        run: |
+          git push origin main-build --force
