@@ -34,11 +34,16 @@ jobs:
         run: |
           git checkout -b main-build
 
+      - name: Fetch and rebase changes
+        run: |
+          git fetch origin main-build
+          git rebase origin/main-build
+
       - name: Add and commit lib folder
         run: |
           git add -f lib
-          git commit -m "Add build artifacts to main-build branch"
+          git commit -m "Add build artifacts to main-build branch" || echo "No changes to commit"
 
       - name: Push to main-build branch
         run: |
-          git push origin main-build
+          git push origin main-build --force
